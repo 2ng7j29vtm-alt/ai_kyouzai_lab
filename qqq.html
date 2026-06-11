@@ -71,7 +71,7 @@
 
   canvas {
     width: 100%;
-    height: 450px;
+    height: 500px;
     background: #0f172a;
     border-radius: 0.5rem;
   }
@@ -92,7 +92,7 @@
     label { font-size: 1rem; }
     input[type="number"] { font-size: 1.1rem; }
     button { font-size: 1.1rem; }
-    canvas { height: 380px; }
+    canvas { height: 420px; }
   }
 </style>
 </head>
@@ -162,11 +162,11 @@
     ctx.fillStyle = "#0f172a";
     ctx.fillRect(0, 0, width, height);
 
-    ctx.strokeStyle = "#1e293b";
-    ctx.lineWidth = 1;
-
     const origin = toCanvasCoords(0, 0, width, height);
 
+    // 太い x軸・y軸
+    ctx.strokeStyle = "#ffffff";
+    ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(0, origin.y);
     ctx.lineTo(width, origin.y);
@@ -174,8 +174,9 @@
     ctx.lineTo(origin.x, height);
     ctx.stroke();
 
+    // 補助線
     ctx.strokeStyle = "#1e293b";
-    ctx.lineWidth = 0.5;
+    ctx.lineWidth = 1;
 
     for (let i = -10; i <= 10; i++) {
       if (i === 0) continue;
@@ -229,7 +230,7 @@
     const vertex = toCanvasCoords(p, q, width, height);
     ctx.fillStyle = "#f97316";
     ctx.beginPath();
-    ctx.arc(vertex.x, vertex.y, 4, 0, Math.PI * 2);
+    ctx.arc(vertex.x, vertex.y, 5, 0, Math.PI * 2);
     ctx.fill();
 
     formulaText.textContent = `y = ${a}(x - ${p})² + ${q}`;
