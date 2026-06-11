@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIきょうざいラボ - ホーム</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        
+        /* ヘッダー */
+        header {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            border-bottom: 1px solid #2d2d2d;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .logo-icon {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            font-size: 0.95rem;
+            color: #cccccc;
+        }
+        nav ul li hover {
+            color: #ffffff;
+            cursor: pointer;
+        }
+
+        /* ヒーローエリア */
+        .hero {
+            background-color: #edf4fc;
+            color: #1c3d5a;
+            text-align: center;
+            padding: 60px 20px;
+        }
+        .hero-sub {
+            color: #2b6cb0;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.3;
+        }
+        .hero-desc {
+            font-size: 1.1rem;
+            color: #4a5568;
+            margin-bottom: 30px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .hero-btns {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #2b6cb0;
+            color: #ffffff;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #2c5282;
+            transform: translateY(-1px);
+        }
+        .btn-secondary {
+            background-color: #2d3748;
+            color: #ffffff;
+            border: 1px solid #4a5568;
+        }
+        .btn-secondary:hover {
+            background-color: #1a202c;
+            transform: translateY(-1px);
+        }
+
+        /* 特徴帯 */
+        .features-bar {
+            background-color: #111111;
+            padding: 30px 40px;
+        }
+        .features-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+        .feature-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.95rem;
+            color: #dddddd;
+        }
+        .feature-icon {
+            font-size: 1.5rem;
+        }
+
+        /* コンテンツセクション共通 */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        .view-all {
+            color: #3182ce;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .view-all:hover {
+            text-decoration: underline;
+        }
+
+        /* 教材サンプルカード */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+        @media (max-width: 900px) {
+            .card-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { grid-template-columns: repeat(2, 1fr); gap: 30px; }
+        }
+        @media (max-width: 600px) {
+            .card-grid { grid-template-columns: 1fr; }
+            .features-grid { grid-template-columns: 1fr; }
+            .hero-btns { flex-direction: column; gap: 10px; }
+            header { flex-direction: column; gap: 15px; padding: 15px; }
+            nav ul { flex-wrap: wrap; justify-content: center; gap: 15px; }
+        }
+        .card {
+            background-color: #262626;
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            cursor: pointer;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+        .card-img-placeholder {
+            width: 100%;
+            height: 140px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .bg-math { background-color: #edf4fc; color: #2b6cb0; }
+        .bg-science { background-color: #e6fffa; color: #234e52; }
+        .bg-social { background-color: #fefcbf; color: #744210; }
+        .bg-info { background-color: #ebf4ff; color: #4c51bf; }
+        .bg-science2 { background-color: #f0fff4; color: #22543d; }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .tag-math { background-color: #ebf8ff; color: #2b6cb0; }
+        .tag-science { background-color: #e6fffa; color: #285e61; }
+        .tag-social { background-color: #fefcbf; color: #744210; }
+        .tag-info { background-color: #e0e7ff; color: #4338ca; }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .card-desc {
+            font-size: 0.9rem;
+            color: #aaaaaa;
+        }
+
+        /* 利用の流れ */
+        .flow-section {
+            background-color: #1f1f1f;
+            padding: 60px 20px;
+        }
+        .flow-grid {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+        @media (max-width: 900px) {
+            .flow-grid { grid-template-columns: 1fr; gap: 30px; }
+        }
+        .flow-item {
+            text-align: center;
+            position: relative;
+        }
+        .flow-num {
+            width: 32px;
+            height: 32px;
+            background-color: #ebf8ff;
+            color: #2b6cb0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0 auto 15px auto;
+        }
+        .flow-item:nth-child(2) .flow-num { background-color: #e6fffa; color: #285e61; }
+        .flow-item:nth-child(3) .flow-num { background-color: #feebc8; color: #9c4221; }
+        .flow-item:nth-child(4) .flow-num { background-color: #e0e7ff; color: #4338ca; }
+        .flow-item:nth-child(5) .flow-num { background-color: #e6fffa; color: #285e61; }
+        
+        .flow-icon {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: #a0aec0;
+        }
+        .flow-title {
+            font-size: 1rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .flow-desc {
+            font-size: 0.85rem;
+            color: #aaaaaa;
+        }
+
+        /* コピペプロンプト */
+        .prompt-desc {
+            color: #aaaaaa;
+            margin-top: -20px;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        .prompt-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .prompt-grid { grid-template-columns: 1fr; }
+        }
+        .prompt-card {
+            background-color: #2d2d2d;
+            border-radius: 8px;
+            padding: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .prompt-card:hover {
+            background-color: #383838;
+        }
+        .prompt-icon {
+            font-size: 1.3rem;
+            color: #4299e1;
+        }
+        .prompt-card:nth-child(2) .prompt-icon { color: #48bb78; }
+        .prompt-card:nth-child(3) .prompt-icon { color: #ecc94b; }
+        .prompt-card:nth-child(4) .prompt-icon { color: #9f7aea; }
+        
+        .prompt-info {
+            flex: 1;
+        }
+        .prompt-title {
+            font-weight: bold;
+            font-size: 1.05rem;
+            margin-bottom: 5px;
+        }
+        .prompt-text {
+            font-size: 0.88rem;
+            color: #aaaaaa;
+        }
+        .arrow-right {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #718096;
+        }
+
+        /* 下部バナー */
+        .banner-section {
+            padding: 40px 20px;
+        }
+        .banner-box {
+            max-width: 1100px;
+            margin: 0 auto;
+            background-color: #e0e7ff;
+            color: #283593;
+            border-radius: 12px;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .banner-box { flex-direction: column; text-align: center; padding: 30px 20px; }
+        }
+        .banner-left {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        @media (max-width: 600px) {
+            .banner-left { flex-direction: column; }
+        }
+        .banner-icon {
+            background-color: #c5cae9;
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: #3f51b5;
+        }
+        .banner-title {
+            font-size: 1.15rem;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+        .banner-desc {
+            font-size: 0.95rem;
+            color: #4f5b93;
+        }
+        .btn-purple {
+            background-color: #4f46e5;
+            color: #ffffff;
+            border: none;
+            white-space: nowrap;
+        }
+        .btn-purple:hover {
+            background-color: #4338ca;
+        }
+
+        /* フッター */
+        footer {
+            background-color: #111111;
+            padding: 30px 40px;
+            border-top: 1px solid #2d2d2d;
+            font-size: 0.9rem;
+            color: #718096;
+        }
+        .footer-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        @media (max-width: 600px) {
+            .footer-container { flex-direction: column; gap: 15px; text-align: center; }
+        }
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ヘッダー -->
+    <header>
+        <div class="logo-area">
+            <div class="logo-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+            </div>
+            <span>AIきょうざいラボ</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#samples">サンプル集</a></li>
+                <li><a href="#prompts">プロンプト集</a></li>
+                <li><a href="#guide">作り方ガイド</a></li>
+                <li><a href="#github">GitHub講座</a></li>
+                <li><a href="#copilot">Copilot活用</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- ヒーローエリア -->
+    <section class="hero">
+        <p class="hero-sub">プログラミング不要</p>
+        <h1 class="hero-title">AIで授業教材を<br>5分で作る</h1>
+        <p class="hero-desc">Copilotにプロンプトを貼るだけ．動くシミュレーション教材がすぐ完成．QRコードで生徒に配布できます．</p>
+        <div class="hero-btns">
+            <a href="#samples" class="btn btn-primary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                教材サンプルを見る ↗
+            </a>
+            <a href="#prompts" class="btn btn-secondary">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                プロンプトを使う ↗
+            </a>
+        </div>
+    </section>
+
+    <!-- 特徴帯 -->
+    <section class="features-bar">
+        <div class="features-grid">
+            <div class="feature-item">
+                <span class="feature-icon" style="color: #4299e1;">🤖</span>
+                <span>Copilot対応</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon" style="color: #48bb78;">📱</span>
+                <span>スマホで使える</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon" style="color: #ecc94b;"> Klaus"> McQueen" 🟠</span>
+                <span>QRで即配布</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon" style="color: #9f7aea;">🐙</span>
+                <span>GitHub Pages公開</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 教材サンプルセクション -->
+    <section id="samples" class="container">
+        <div class="section-header">
+            <h2 class="section-title">教材サンプル</h2>
+            <a href="#" class="view-all">すべて見る ↗</a>
+        </div>
+        <div class="card-grid">
+            <!-- 数学 -->
+            <div class="card">
+                <div class="card-img-placeholder bg-math">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/></svg>
+                </div>
+                <span class="tag tag-math">数学</span>
+                <h3 class="card-title">二次関数グラフ</h3>
+                <p class="card-desc">スライダーでa,b,cを変化させてグラフの形を体験</p>
+            </div>
+            <!-- 理科1 -->
+            <div class="card">
+                <div class="card-img-placeholder bg-science">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="7"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </div>
+                <span class="tag tag-science">理科</span>
+                <h3 class="card-title">力学シミュレーション</h3>
+                <p class="card-desc">斜面・摩擦・加速度をリアルタイムで確認</p>
+            </div>
+            <!-- 社会 -->
+            <div class="card">
+                <div class="card-img-placeholder bg-social">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                </div>
+                <span class="tag tag-social">社会</span>
+                <h3 class="card-title">人口ピラミッド</h3>
+                <p class="card-desc">年代別・国別の人口構造を比較できる</p>
+            </div>
+            <!-- 情報 -->
+            <div class="card">
+                <div class="card-img-placeholder bg-info">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                </div>
+                <span class="tag tag-info">情報</span>
+                <h3 class="card-title">アルゴリズム可視化</h3>
+                <p class="card-desc">ソートの手順をステップ表示</p>
+            </div>
+            <!-- 理科2 -->
+            <div class="card">
+                <div class="card-img-placeholder bg-science2">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5-2.5-2.5-5.5-2.5-8.5C2 4.5 4.5 2 7.5 2c3 0 6 3 6 6s3 6 6 6 5.5-2.5 5.5-5.5c0-3-2.5-5.5-5.5-5.5"/></svg>
+                </div>
+                <span class="tag tag-science">理科</span>
+                <h3 class="card-title">遺伝の法則</h3>
+                <p class="card-desc">メンデルの法則をインタラクティブに学ぶ</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 利用の流れセクション -->
+    <section id="guide" class="flow-section">
+        <div class="container" style="padding: 0 20px;">
+            <div class="section-header">
+                <h2 class="section-title">利用の流れ</h2>
+            </div>
+            <div class="flow-grid">
+                <div class="flow-item">
+                    <div class="flow-num">1</div>
+                    <div class="flow-icon">📋</div>
+                    <div class="flow-title">プロンプトをコピー</div>
+                    <p class="flow-desc">赤字部分を単元名に変えるだけ</p>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">2</div>
+                    <div class="flow-icon">🤖</div>
+                    <div class="flow-title">Copilotに貼る</div>
+                    <p class="flow-desc">HTMLが自動生成される</p>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">3</div>
+                    <div class="flow-icon">👁️</div>
+                    <div class="flow-title">動作確認</div>
+                    <p class="flow-desc">ブラウザで開いて確認</p>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">4</div>
+                    <div class="flow-icon">🐙</div>
+                    <div class="flow-title">GitHub Pagesで公開</div>
+                    <p class="flow-desc">URLが発行される</p>
+                </div>
+                <div class="flow-item">
+                    <div class="flow-num">5</div>
+                    <div class="flow-icon">📱</div>
+                    <div class="flow-title">QRコード配布</div>
+                    <p class="flow-desc">生徒がスマホで利用</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- コピペプロンプト集セクション -->
+    <section id="prompts" class="container">
+        <div class="section-header">
+            <h2 class="section-title">コピペプロンプト集</h2>
+        </div>
+        <p class="prompt-desc">赤字部分を変えるだけで使えるテンプレートを配布しています</p>
+        <div class="prompt-grid">
+            <div class="prompt-card">
+                <div class="prompt-icon">📊</div>
+                <div class="prompt-info">
+                    <div class="prompt-title">可視化テンプレート</div>
+                    <p class="prompt-text">グラフ・図形の動的表示</p>
+                </div>
+                <span class="arrow-right">→</span>
+            </div>
+            <div class="prompt-card">
+                <div class="prompt-icon">⚙️</div>
+                <div class="prompt-info">
+                    <div class="prompt-title">シミュレーション</div>
+                    <p class="prompt-text">物理・化学・生物など</p>
+                </div>
+                <span class="arrow-right">→</span>
+            </div>
+            <div class="prompt-card">
+                <div class="prompt-icon">❓</div>
+                <div class="prompt-info">
+                    <div class="prompt-title">クイズテンプレート</div>
+                    <p class="prompt-text">選択式・記述式</p>
+                </div>
+                <span class="arrow-right">→</span>
+            </div>
+            <div class="prompt-card">
+                <div class="prompt-icon">📈</div>
+                <div class="prompt-info">
+                    <div class="prompt-title">グラフ教材</div>
+                    <p class="prompt-text">棒・折れ線・円グラフ</p>
+                </div>
+                <span class="arrow-right">→</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 下部バナー -->
+    <section id="copilot" class="banner-section">
+        <div class="banner-box">
+            <div class="banner-left">
+                <div class="banner-icon">✨</div>
+                <div>
+                    <div class="banner-title">学校PCにCopilotしかない方へ</div>
+                    <p class="banner-desc">CopilotだけでHTML教材を作れます．専用の設定例・プロンプトを用意しています．</p>
+                </div>
+            </div>
+            <a href="#" class="btn btn-purple">Copilot活用法を見る ↗</a>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer>
+        <div class="footer-container">
+            <span>© 2025 AIきょうざいラボ</span>
+            <div class="footer-links">
+                <a href="#">プライバシーポリシー</a>
+                <a href="#">お問い合わせ</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
