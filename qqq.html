@@ -23,7 +23,7 @@
 
   h1 {
     text-align: center;
-    font-size: 1.6rem;
+    font-size: 1.7rem;
     margin-bottom: 1rem;
   }
 
@@ -35,8 +35,16 @@
     margin-bottom: 1rem;
   }
 
-  .control-group {
+  .input-row {
+    display: flex;
+    gap: 1rem;
     margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .input-group {
+    flex: 1;
+    min-width: 100px;
   }
 
   label {
@@ -44,21 +52,26 @@
     font-weight: bold;
   }
 
-  input[type="range"] {
+  input[type="number"] {
     width: 100%;
-    margin-top: 0.5rem;
+    padding: 0.6rem;
+    font-size: 1.2rem;
+    margin-top: 0.3rem;
+    border-radius: 0.4rem;
+    border: 1px solid #ccc;
   }
 
-  .value-display {
-    font-size: 1rem;
-    color: #2563eb;
+  .formula {
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 1rem;
     font-weight: bold;
-    margin-left: 0.5rem;
+    color: #2563eb;
   }
 
   canvas {
     width: 100%;
-    height: 300px;
+    height: 450px;
     background: #0f172a;
     border-radius: 0.5rem;
   }
@@ -75,9 +88,11 @@
   }
 
   @media (max-width: 600px) {
-    h1 { font-size: 1.3rem; }
+    h1 { font-size: 1.4rem; }
     label { font-size: 1rem; }
+    input[type="number"] { font-size: 1.1rem; }
     button { font-size: 1.1rem; }
+    canvas { height: 380px; }
   }
 </style>
 </head>
@@ -87,25 +102,26 @@
   <h1>二次関数シミュレーター<br>y = a(x - p)² + q</h1>
 
   <div class="controls">
-    <div class="control-group">
-      <label>a（開き具合）:
-        <span id="aVal" class="value-display">1.0</span>
-      </label>
-      <input type="range" id="aSlider" min="-3" max="3" step="0.1" value="1">
+
+    <div class="input-row">
+      <div class="input-group">
+        <label>a（開き具合）</label>
+        <input type="number" id="aInput" value="1" step="0.1">
+      </div>
+
+      <div class="input-group">
+        <label>p（左右の移動）</label>
+        <input type="number" id="pInput" value="0" step="0.1">
+      </div>
+
+      <div class="input-group">
+        <label>q（上下の移動）</label>
+        <input type="number" id="qInput" value="0" step="0.1">
+      </div>
     </div>
 
-    <div class="control-group">
-      <label>p（左右の移動）:
-        <span id="pVal" class="value-display">0.0</span>
-      </label>
-      <input type="range" id="pSlider" min="-5" max="5" step="0.1" value="0">
-    </div>
-
-    <div class="control-group">
-      <label>q（上下の移動）:
-        <span id="qVal" class="value-display">0.0</span>
-      </label>
-      <input type="range" id="qSlider" min="-5" max="5" step="0.1" value="0">
+    <div class="formula" id="formulaText">
+      y = 1(x - 0)² + 0
     </div>
 
     <button id="resetBtn">リセット</button>
@@ -118,14 +134,10 @@
   const canvas = document.getElementById("graph");
   const ctx = canvas.getContext("2d");
 
-  const aSlider = document.getElementById("aSlider");
-  const pSlider = document.getElementById("pSlider");
-  const qSlider = document.getElementById("qSlider");
-
-  const aVal = document.getElementById("aVal");
-  const pVal = document.getElementById("pVal");
-  const qVal = document.getElementById("qVal");
-
+  const aInput = document.getElementById("aInput");
+  const pInput = document.getElementById("pInput");
+  const qInput = document.getElementById("qInput");
+  const formulaText = document.getElementById("formulaText");
   const resetBtn = document.getElementById("resetBtn");
 
   function resizeCanvas() {
@@ -190,9 +202,9 @@
 
     drawGrid(width, height);
 
-    const a = parseFloat(aSlider.value);
-    const p = parseFloat(pSlider.value);
-    const q = parseFloat(qSlider.value);
+    const a = parseFloat(aInput.value);
+    const p = parseFloat(pInput.value);
+    const q = parseFloat(qInput.value);
 
     ctx.strokeStyle = "#38bdf8";
     ctx.lineWidth = 2;
@@ -219,28 +231,26 @@
     ctx.beginPath();
     ctx.arc(vertex.x, vertex.y, 4, 0, Math.PI * 2);
     ctx.fill();
+
+    formulaText.textContent = `y = ${a}(x - ${p})² + ${q}`;
   }
 
-  function updateLabels() {
-    aVal.textContent = parseFloat(aSlider.value).toFixed(1);
-    pVal.textContent = parseFloat(pSlider.value).toFixed(1);
-    qVal.textContent = parseFloat(qSlider.value).toFixed(1);
+  function update() {
+    draw();
   }
 
-  aSlider.addEventListener("input", () => { updateLabels(); draw(); });
-  pSlider.addEventListener("input", () => { updateLabels(); draw(); });
-  qSlider.addEventListener("input", () => { updateLabels(); draw(); });
+  aInput.addEventListener("input", update);
+  pInput.addEventListener("input", update);
+  qInput.addEventListener("input", update);
 
   resetBtn.addEventListener("click", () => {
-    aSlider.value = 1;
-    pSlider.value = 0;
-    qSlider.value = 0;
-    updateLabels();
+    aInput.value = 1;
+    pInput.value = 0;
+    qInput.value = 0;
     draw();
   });
 
   resizeCanvas();
-  updateLabels();
 </script>
 
 </body>
