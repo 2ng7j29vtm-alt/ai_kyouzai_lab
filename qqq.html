@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>二次関数シミュレーター y = a(x - p)² + q</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    font-family: system-ui, sans-serif;
+    margin: 0;
+    padding: 1rem;
+    background: #f5f7fa;
+    color: #111;
+    display: flex;
+    justify-content: center;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .controls {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+  }
+
+  .control-group {
+    margin-bottom: 1rem;
+  }
+
+  label {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .value-display {
+    font-size: 1rem;
+    color: #2563eb;
+    font-weight: bold;
+    margin-left: 0.5rem;
+  }
+
+  canvas {
+    width: 100%;
+    height: 300px;
+    background: #0f172a;
+    border-radius: 0.5rem;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    background: #ef4444;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 600px) {
+    h1 { font-size: 1.3rem; }
+    label { font-size: 1rem; }
+    button { font-size: 1.1rem; }
+  }
+</style>
+</head>
+
+<body>
+<div class="container">
+  <h1>二次関数シミュレーター<br>y = a(x - p)² + q</h1>
+
+  <div class="controls">
+    <div class="control-group">
+      <label>a（開き具合）:
+        <span id="aVal" class="value-display">1.0</span>
+      </label>
+      <input type="range" id="aSlider" min="-3" max="3" step="0.1" value="1">
+    </div>
+
+    <div class="control-group">
+      <label>p（左右の移動）:
+        <span id="pVal" class="value-display">0.0</span>
+      </label>
+      <input type="range" id="pSlider" min="-5" max="5" step="0.1" value="0">
+    </div>
+
+    <div class="control-group">
+      <label>q（上下の移動）:
+        <span id="qVal" class="value-display">0.0</span>
+      </label>
+      <input type="range" id="qSlider" min="-5" max="5" step="0.1" value="0">
+    </div>
+
+    <button id="resetBtn">リセット</button>
+  </div>
+
+  <canvas id="graph"></canvas>
+</div>
+
+<script>
+  const canvas = document.getElementById("graph");
+  const ctx = canvas.getContext("2d");
+
+  const aSlider = document.getElementById("aSlider");
+  const pSlider = document.getElementById("pSlider");
+  const qSlider = document.getElementById("qSlider");
+
+  const aVal = document.getElementById("aVal");
+  const pVal = document.getElementById("pVal");
+  const qVal = document.getElementById("qVal");
+
+  const resetBtn = document.getElementById("resetBtn");
+
+  function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * window.devicePixelRatio;
+    canvas.height = rect.height * window.devicePixelRatio;
+    ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+    draw();
+  }
+
+  window.addEventListener("resize", resizeCanvas);
+
+  function toCanvasCoords(x, y, width, height) {
+    const xMin = -10, xMax = 10;
+    const yMin = -10, yMax = 10;
+    const px = (x - xMin) / (xMax - xMin) * width;
+    const py = height - (y - yMin) / (yMax - yMin) * height;
+    return { x: px, y: py };
+  }
+
+  function drawGrid(width, height) {
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0, 0, width, height);
+
+    ctx.strokeStyle = "#1e293b";
+    ctx.lineWidth = 1;
+
+    const origin = toCanvasCoords(0, 0, width, height);
+
+    ctx.beginPath();
+    ctx.moveTo(0, origin.y);
+    ctx.lineTo(width, origin.y);
+    ctx.moveTo(origin.x, 0);
+    ctx.lineTo(origin.x, height);
+    ctx.stroke();
+
+    ctx.strokeStyle = "#1e293b";
+    ctx.lineWidth = 0.5;
+
+    for (let i = -10; i <= 10; i++) {
+      if (i === 0) continue;
+
+      let p1 = toCanvasCoords(i, -10, width, height);
+      let p2 = toCanvasCoords(i, 10, width, height);
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.stroke();
+
+      p1 = toCanvasCoords(-10, i, width, height);
+      p2 = toCanvasCoords(10, i, width, height);
+      ctx.beginPath();
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.stroke();
+    }
+  }
+
+  function draw() {
+    const width = canvas.width / window.devicePixelRatio;
+    const height = canvas.height / window.devicePixelRatio;
+
+    drawGrid(width, height);
+
+    const a = parseFloat(aSlider.value);
+    const p = parseFloat(pSlider.value);
+    const q = parseFloat(qSlider.value);
+
+    ctx.strokeStyle = "#38bdf8";
+    ctx.lineWidth = 2;
+
+    ctx.beginPath();
+    let first = true;
+
+    for (let x = -10; x <= 10; x += 0.05) {
+      const y = a * (x - p) * (x - p) + q;
+      const pos = toCanvasCoords(x, y, width, height);
+
+      if (first) {
+        ctx.moveTo(pos.x, pos.y);
+        first = false;
+      } else {
+        ctx.lineTo(pos.x, pos.y);
+      }
+    }
+
+    ctx.stroke();
+
+    const vertex = toCanvasCoords(p, q, width, height);
+    ctx.fillStyle = "#f97316";
+    ctx.beginPath();
+    ctx.arc(vertex.x, vertex.y, 4, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function updateLabels() {
+    aVal.textContent = parseFloat(aSlider.value).toFixed(1);
+    pVal.textContent = parseFloat(pSlider.value).toFixed(1);
+    qVal.textContent = parseFloat(qSlider.value).toFixed(1);
+  }
+
+  aSlider.addEventListener("input", () => { updateLabels(); draw(); });
+  pSlider.addEventListener("input", () => { updateLabels(); draw(); });
+  qSlider.addEventListener("input", () => { updateLabels(); draw(); });
+
+  resetBtn.addEventListener("click", () => {
+    aSlider.value = 1;
+    pSlider.value = 0;
+    qSlider.value = 0;
+    updateLabels();
+    draw();
+  });
+
+  resizeCanvas();
+  updateLabels();
+</script>
+
+</body>
+</html>
