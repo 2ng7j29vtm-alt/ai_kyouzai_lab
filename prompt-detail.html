@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AIきょうざいラボ - コピペプロンプト集 詳細</title>
     <style>
-        /* 基本スタイル設定 */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -23,7 +22,7 @@
             text-decoration: none;
         }
 
-        /* ヘッダー（ホーム共通） */
+        /* ヘッダー */
         header {
             background-color: #1a1a1a;
             display: flex;
@@ -48,13 +47,6 @@
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        nav ul {
-            display: flex;
-            list-style: none;
-            gap: 25px;
-            font-size: 0.95rem;
-            color: #cccccc;
         }
 
         /* メインレイアウト */
@@ -117,71 +109,88 @@
             padding: 30px;
             border-radius: 12px;
             border: 1px solid #2d2d2d;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
         .section-subtitle {
             font-size: 1.2rem;
-            margin-bottom: 20px;
             border-left: 4px solid #2b6cb0;
             padding-left: 10px;
         }
-        .form-group {
-            margin-bottom: 20px;
+        
+        .free-input-area {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-        .form-group label {
-            display: block;
-            font-size: 0.9rem;
+        .free-input-area label {
             font-weight: bold;
-            margin-bottom: 8px;
             color: #cccccc;
         }
-        .form-group input {
+        textarea {
             width: 100%;
-            padding: 12px;
+            height: 200px;
+            padding: 15px;
             background-color: #1a1a1a;
             border: 1px solid #4a5568;
             border-radius: 6px;
             color: #ffffff;
             font-size: 1rem;
+            font-family: inherit;
+            line-height: 1.5;
+            resize: vertical;
         }
-        .form-group input:focus {
+        textarea:focus {
             border-color: #2b6cb0;
             outline: none;
         }
 
-        /* ボタンエリア */
-        .action-area {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
+        .system-rules {
+            background-color: #1e1e1e;
+            padding: 15px;
+            border-radius: 6px;
+            border-left: 3px solid #e53e3e;
         }
+        .system-rules-title {
+            color: #fc8181;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .system-rules ul {
+            list-style-position: inside;
+            color: #aaaaaa;
+            font-size: 0.85rem;
+        }
+
+        /* ボタン */
         .btn {
-            flex: 1;
             padding: 14px;
             border-radius: 6px;
             font-weight: bold;
             font-size: 1rem;
             cursor: pointer;
             text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s;
             border: none;
+            transition: all 0.2s;
+            width: 100%;
+        }
+        .btn-primary {
+            background-color: #2b6cb0;
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background-color: #2c5282;
         }
         .btn-copy {
             background-color: #48bb78;
             color: #ffffff;
+            margin-top: 15px;
+            display: none; /* 初期状態は非表示 */
         }
         .btn-copy:hover {
             background-color: #38a169;
-        }
-        .btn-copilot {
-            background-color: #4f46e5;
-            color: #ffffff;
-        }
-        .btn-copilot:hover {
-            background-color: #4338ca;
         }
 
         /* 右カラム：プロンプトプレビュー領域 */
@@ -192,23 +201,15 @@
         }
         .prompt-box {
             background-color: #1e293b;
-            border-left: 5px solid #3b82f6;
+            border: 1px solid #334155;
             border-radius: 8px;
             padding: 25px;
             font-family: 'Courier New', Courier, monospace;
-            font-size: 1rem;
+            font-size: 0.95rem;
             line-height: 1.7;
             white-space: pre-wrap;
-            color: #f8fafc;
-            min-height: 300px;
-        }
-        .highlight-keyword {
-            color: #ff6b6b;
-            font-weight: bold;
-            text-decoration: underline;
-            background-color: rgba(255, 107, 107, 0.1);
-            padding: 2px 4px;
-            border-radius: 4px;
+            color: #cbd5e1;
+            min-height: 350px;
         }
 
         /* コピー完了通知 */
@@ -234,151 +235,104 @@
             <div class="logo-icon">🔑</div>
             <span>AIきょうざいラボ</span>
         </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">ホームに戻る</a></li>
-            </ul>
-        </nav>
     </header>
 
     <div class="container">
         <div class="page-header">
-            <h1 class="page-title">コピペプロンプト集</h1>
-            <p class="page-desc">左側のフォームの赤字部分を書き換えるだけで，授業用のプロンプトが自動で完成します．</p>
+            <h1 class="page-title">プロンプトジェネレーター</h1>
+            <p class="page-desc">授業でやりたいことを左側に書き込んでください．教材化に必要な条件が自動で追加されます．</p>
         </div>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('math')">数学（グラフ可視化）</button>
-            <button class="tab-btn" onclick="switchTab('physics')">物理（実験シミュレーション）</button>
-            <button class="tab-btn" onclick="switchTab('info')">情報（アルゴリズム可視化）</button>
+            <button class="tab-btn active" onclick="switchTab('math')">数学の例</button>
+            <button class="tab-btn" onclick="switchTab('physics')">物理の例</button>
+            <button class="tab-btn" onclick="switchTab('info')">情報の例</button>
         </div>
 
         <div class="main-grid">
             <div class="form-section">
-                <h2 class="section-subtitle" id="form-title">入力フォーム</h2>
-                <div id="dynamic-inputs">
-                    </div>
-                <div class="action-area">
-                    <button class="btn btn-copy" onclick="copyPrompt()">
-                        📋 プロンプトをコピー
-                    </button>
-                    <a href="https://copilot.microsoft.com/" target="_blank" class="btn btn-copilot">
-                        🤖 Copilotを開く ↗
-                    </a>
+                <h2 class="section-subtitle">作りたい教材の内容</h2>
+                
+                <div class="free-input-area">
+                    <label for="user-input">自由に編集してください：</label>
+                    <textarea id="user-input"></textarea>
                 </div>
+
+                <div class="system-rules">
+                    <div class="system-rules-title">※以下の必須条件が自動で追加されます</div>
+                    <ul>
+                        <li>HTML, CSS, JSを単一ファイルで出力すること</li>
+                        <li>外部ライブラリ（CDNなど）を使用しないこと</li>
+                        <li>スマホで操作しやすいUIにすること</li>
+                    </ul>
+                </div>
+
+                <button class="btn btn-primary" onclick="generatePrompt()">
+                    ▶️ 右に反映する
+                </button>
             </div>
 
             <div class="preview-section">
                 <h2 class="section-subtitle">完成したプロンプト</h2>
                 <div class="prompt-box" id="prompt-preview">
-                    </div>
+                    左側のボタンを押すと，ここにAIへ入力するテキストが表示されます．
+                </div>
+                <button class="btn btn-copy" id="copy-btn" onclick="copyPrompt()">
+                    📋 コピーする
+                </button>
             </div>
         </div>
     </div>
 
-    <div class="toast" id="copy-toast">コピーしました！学校のCopilotに貼り付けてください．</div>
+    <div class="toast" id="copy-toast">コピーができました！</div>
 
     <script>
-        // 各教科のテンプレートデータ定義
-        const templates = {
-            math: {
-                title: "数学：動的グラフ教材の設定",
-                fields: [
-                    { id: "unit", label: "変更する単元名・関数名", default: "二次関数" },
-                    { id: "formula", label: "画面に表示する数式", default: "y = ax^2 + bx + c" },
-                    { id: "params", label: "動かしたい係数", default: "a, b, c" }
-                ],
-                template: "あなたは優秀なプログラミング講師です．HTMLとJavaScriptを使用して，生徒が自由に操作できる「{{unit}}」のシミュレーターを作成してください．\n\n・画面上に数式「{{formula}}」を大きく表示してください．\n・スライダーを使って，係数「{{params}}」の値を動的に変化させられるようにしてください．\n・値の変化に合わせて，グラフの形状がリアルタイムに滑らかに変わる仕組みにしてください．\n・学校のPCや生徒のスマートフォンからQRコード経由ですぐに動かせるよう，外部ライブラリは一切使用せず，単一のHTMLファイル（インラインCSS・JS）としてコードを出力してください．"
-            },
-            physics: {
-                title: "物理：実験シミュレーションの設定",
-                fields: [
-                    { id: "phenomenon", label: "変更する現象名・実験名", default: "自由落下" },
-                    { id: "variables", label: "調整させたい物理量", default: "重力加速度, 初速度" },
-                    { id: "display", label: "画面にリアルタイム表示するデータ", default: "落下時間, 移動速度" }
-                ],
-                template: "あなたは優秀なプログラミング講師です．HTML/CSS/JSを使って，理科の授業で使える「{{phenomenon}}」の実験シミュレーション教材を作成してください．\n\n・画面上にスライダーを配置し，「{{variables}}」の値を自由に調整可能にしてください．\n・時間経過に伴う物体の動きをアニメーションで表現し，「{{display}}」のデータをリアルタイムで数値表示してください．\n・生徒が何度も繰り返し実験を試せるよう，ワンクリックで初期状態に戻る「リセットボタン」を必ず設置してください．\n・学校の厳しいセキュリティフィルタリングに引っかからないよう，外部接続ライブラリは使わずに単一のHTMLファイルとして完成させてください．"
-            },
-            info: {
-                title: "情報：アルゴリズム可視化の設定",
-                fields: [
-                    { id: "algo", label: "変更するアルゴリズム名", default: "バブルソート" },
-                    { id: "target", label: "可視化する対象の表現", default: "ランダムに並んだ数値の棒グラフ" },
-                    { id: "action", label: "操作ボタンの名称", default: "次へ進む" }
-                ],
-                template: "あなたは優秀なプログラミング講師です．高校「情報I」の授業向けに，数学的・論理的思考を促す「{{algo}}」の動的可視化教材を作成してください．\n\n・視覚的な理解を助けるため，「{{target}}」を画面中央にわかりやすく描画してください．\n・自動で処理を進めるのではなく，生徒自身のペースで確認できるよう「{{action}}」ボタンを設置し，1ステップずつ処理が実行される構造にしてください．\n・現在処理中の要素（比較しているデータや，位置を交換しているデータ）の色を一時的に変えるなど，視覚的な強調を行ってください．\n・配布を容易にするため，すべて単一のHTMLファイル内のコードとして完結させてください．"
-            }
+        // AIに必ず守らせるシステムプロンプト（固定部分）
+        const systemPrompt = `\n\n【必須条件：必ず以下のルールを守って出力してください】
+1. HTML，CSS，JavaScriptのコードをすべて1つのHTMLファイル内に記述してください．
+2. 学校のネットワーク制限を考慮し，外部のライブラリやCDN（jQuery, React等）は一切使用しないでください．
+3. 生徒がスマートフォンで直感的に操作できるよう，ボタンや文字は大きくし，レスポンシブデザインにしてください．
+4. 何度もやり直せるように，必ず「リセットボタン」を画面内に配置してください．`;
+
+        // 各教科の入力例
+        const examples = {
+            math: "あなたは優秀なプログラミング講師です．生徒が自由に操作できる「二次関数」のシミュレーターを作成してください．\n\n・スライダーを使って，係数a, b, cの値を動的に変化させられるようにしてください．\n・値の変化に合わせて，グラフの形状がリアルタイムに滑らかに変わる仕組みにしてください．",
+            physics: "あなたは優秀な理科の講師です．「自由落下」の実験シミュレーション教材を作成してください．\n\n・画面上にスライダーを配置し，「重力加速度」と「初速度」の値を自由に調整可能にしてください．\n・時間経過に伴う物体の動きをアニメーションで表現し，「落下時間」と「移動速度」をリアルタイムで数値表示してください．",
+            info: "あなたは優秀な情報の講師です．「バブルソート」の動的可視化教材を作成してください．\n\n・ランダムに並んだ数値の棒グラフを画面中央に描画してください．\n・「次へ進む」ボタンを設置し，生徒がボタンを押すたびに1ステップずつ処理が実行される構造にしてください．\n・現在比較しているデータの棒の色を一時的に赤色にするなど，視覚的な強調を行ってください．"
         };
 
-        let currentTab = 'math';
+        // 初期化処理
+        window.onload = function() {
+            switchTab('math');
+        };
 
-        // タブ切り替え処理
+        // タブ切り替え
         function switchTab(tabKey) {
-            currentTab = tabKey;
-            
-            // タブボタンのアクティブ状態更新
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
-
-            // フォームタイトル更新
-            document.getElementById('form-title').innerText = templates[tabKey].title;
-
-            // フォームの動的生成
-            const inputContainer = document.getElementById('dynamic-inputs');
-            inputContainer.innerHTML = '';
-
-            templates[tabKey].fields.forEach(field => {
-                const group = document.createElement('div');
-                group.className = 'form-group';
-                
-                const label = document.createElement('label');
-                label.innerText = field.label;
-                
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.id = field.id;
-                input.value = field.default;
-                input.oninput = renderPrompt; // 入力時に毎回再描画
-
-                group.appendChild(label);
-                group.appendChild(input);
-                inputContainer.appendChild(group);
-            });
-
-            renderPrompt();
+            
+            // 左側のテキストエリアに例をセット
+            document.getElementById('user-input').value = examples[tabKey];
+            
+            // 右側の表示をリセット
+            document.getElementById('prompt-preview').innerText = "左側のボタンを押すと，ここにAIへ入力するテキストが表示されます．";
+            document.getElementById('copy-btn').style.display = 'none';
         }
 
-        // プロンプトをレンダリング（赤字ハイライトを適用）
-        function renderPrompt() {
-            const data = templates[currentTab];
-            let htmlText = data.template;
-
-            data.fields.forEach(field => {
-                const inputEl = document.getElementById(field.id);
-                const value = inputEl ? inputEl.value : field.default;
-                // 画面表示用にはHTMLタグを埋め込む
-                const highlighted = `<span class="highlight-keyword">${value}</span>`;
-                htmlText = htmlText.replaceAll(`{{${field.id}}}`, highlighted);
-            });
-
-            document.getElementById('prompt-preview').innerHTML = htmlText;
+        // プロンプトを生成して右側に反映
+        function generatePrompt() {
+            const userInput = document.getElementById('user-input').value;
+            const finalPrompt = userInput + systemPrompt;
+            
+            document.getElementById('prompt-preview').innerText = finalPrompt;
+            document.getElementById('copy-btn').style.display = 'block';
         }
 
-        // コピー機能（HTMLタグを除外してプレーンテキストとしてコピー）
+        // クリップボードにコピー
         function copyPrompt() {
-            const data = templates[currentTab];
-            let rawText = data.template;
-
-            data.fields.forEach(field => {
-                const inputEl = document.getElementById(field.id);
-                const value = inputEl ? inputEl.value : field.default;
-                rawText = rawText.replaceAll(`{{${field.id}}}`, value);
-            });
-
-            navigator.clipboard.writeText(rawText).then(() => {
-                // トースト通知の表示
+            const finalPrompt = document.getElementById('prompt-preview').innerText;
+            
+            navigator.clipboard.writeText(finalPrompt).then(() => {
                 const toast = document.getElementById('copy-toast');
                 toast.style.display = 'block';
                 setTimeout(() => {
@@ -386,11 +340,6 @@
                 }, 3000);
             });
         }
-
-        // 初期化処理
-        window.onload = function() {
-            switchTab('math');
-        };
     </script>
 </body>
 </html>
