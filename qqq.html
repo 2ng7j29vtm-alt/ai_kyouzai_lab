@@ -86,14 +86,6 @@
     border-radius: 0.5rem;
     margin-top: 0.5rem;
   }
-
-  @media (max-width: 600px) {
-    h1 { font-size: 1.4rem; }
-    label { font-size: 1rem; }
-    input[type="number"] { font-size: 1.1rem; }
-    button { font-size: 1.1rem; }
-    canvas { height: 440px; }
-  }
 </style>
 </head>
 
@@ -164,12 +156,17 @@
 
     const origin = toCanvasCoords(0, 0, width, height);
 
-    // 太い x軸・y軸
-    ctx.strokeStyle = "#ffffff";
+    // x軸（赤）
+    ctx.strokeStyle = "#ff4d4d";
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.moveTo(0, origin.y);
     ctx.lineTo(width, origin.y);
+    ctx.stroke();
+
+    // y軸（青）
+    ctx.strokeStyle = "#4da6ff";
+    ctx.beginPath();
     ctx.moveTo(origin.x, 0);
     ctx.lineTo(origin.x, height);
     ctx.stroke();
@@ -180,19 +177,19 @@
     ctx.fillText("O", origin.x + 6, origin.y - 6);
 
     // 目盛（-10〜10）
-    ctx.fillStyle = "#ffffff";
     ctx.font = "14px sans-serif";
+    ctx.fillStyle = "#ffffff";
 
     for (let i = -10; i <= 10; i++) {
       if (i === 0) continue;
 
       // x軸の目盛
       let posX = toCanvasCoords(i, 0, width, height);
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(posX.x, posX.y - 5);
       ctx.lineTo(posX.x, posX.y + 5);
-      ctx.strokeStyle = "#ffffff";
-      ctx.lineWidth = 1;
       ctx.stroke();
       ctx.fillText(i, posX.x - 4, posX.y + 18);
 
