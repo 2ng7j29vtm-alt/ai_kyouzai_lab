@@ -71,7 +71,7 @@
 
   canvas {
     width: 100%;
-    height: 500px;
+    height: 520px;
     background: #0f172a;
     border-radius: 0.5rem;
   }
@@ -92,7 +92,7 @@
     label { font-size: 1rem; }
     input[type="number"] { font-size: 1.1rem; }
     button { font-size: 1.1rem; }
-    canvas { height: 420px; }
+    canvas { height: 440px; }
   }
 </style>
 </head>
@@ -174,6 +174,37 @@
     ctx.lineTo(origin.x, height);
     ctx.stroke();
 
+    // 原点 O
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "16px sans-serif";
+    ctx.fillText("O", origin.x + 6, origin.y - 6);
+
+    // 目盛（-10〜10）
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "14px sans-serif";
+
+    for (let i = -10; i <= 10; i++) {
+      if (i === 0) continue;
+
+      // x軸の目盛
+      let posX = toCanvasCoords(i, 0, width, height);
+      ctx.beginPath();
+      ctx.moveTo(posX.x, posX.y - 5);
+      ctx.lineTo(posX.x, posX.y + 5);
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillText(i, posX.x - 4, posX.y + 18);
+
+      // y軸の目盛
+      let posY = toCanvasCoords(0, i, width, height);
+      ctx.beginPath();
+      ctx.moveTo(posY.x - 5, posY.y);
+      ctx.lineTo(posY.x + 5, posY.y);
+      ctx.stroke();
+      ctx.fillText(i, posY.x + 8, posY.y + 4);
+    }
+
     // 補助線
     ctx.strokeStyle = "#1e293b";
     ctx.lineWidth = 1;
@@ -227,6 +258,7 @@
 
     ctx.stroke();
 
+    // 頂点
     const vertex = toCanvasCoords(p, q, width, height);
     ctx.fillStyle = "#f97316";
     ctx.beginPath();
