@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIきょうざいラボ - 作り方・修正ガイド</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #1a1a1a; color: #ffffff; line-height: 1.6; padding-bottom: 60px; }
+        a { color: inherit; text-decoration: none; }
+        header { background-color: #1a1a1a; display: flex; justify-content: space-between; padding: 15px 40px; border-bottom: 1px solid #2d2d2d; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 1.2rem; }
+        .logo-icon { background-color: #e8f0fe; color: #1a73e8; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+        .page-header { text-align: center; margin-bottom: 40px; }
+        .page-title { font-size: 2rem; margin-bottom: 15px; }
+        .page-desc { color: #aaaaaa; font-size: 1.1rem; }
+        .step-container { background-color: #262626; border-radius: 12px; padding: 30px; margin-bottom: 30px; border: 1px solid #333333; }
+        .step-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #333333; padding-bottom: 15px; }
+        .step-badge { background-color: #dd6b20; color: white; font-weight: bold; padding: 5px 12px; border-radius: 20px; font-size: 1.1rem; }
+        .step-title { font-size: 1.4rem; font-weight: bold; }
+        .step-desc { font-size: 1.05rem; margin-bottom: 15px; }
+        .chat-box { background-color: #1e293b; padding: 15px; border-radius: 8px; border-left: 4px solid #4299e1; margin: 10px 0; font-family: monospace; color: #90cdf4; }
+        .error-box { background-color: #4a1d1d; padding: 15px; border-radius: 8px; border-left: 4px solid #fc8181; margin: 10px 0; font-family: monospace; color: #feb2b2; }
+        ul { margin-left: 25px; color: #cccccc; }
+        li { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-area"><div class="logo-icon">🔑</div><span>AIきょうざいラボ</span></div>
+        <a href="index.html" style="color: #cccccc; font-size: 0.95rem;">ホームに戻る</a>
+    </header>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">教材の作り方・修正ガイド</h1>
+            <p class="page-desc">AIは最初から完璧な教材を作れないことがあります．動かして修正するまでの流れをマスターしましょう．</p>
+        </div>
+
+        <div class="step-container">
+            <div class="step-header"><span class="step-badge">Step 1</span><h2 class="step-title">AIにプロンプトを送る</h2></div>
+            <div class="step-desc">
+                <p>「サンプル・プロンプト集」からコピーした文章を，Copilotなどの生成AIに入力して送信します．数十秒待つと，HTMLのコードが出力されます．</p>
+            </div>
+        </div>
+
+        <div class="step-container">
+            <div class="step-header"><span class="step-badge">Step 2</span><h2 class="step-title">動作確認をする</h2></div>
+            <div class="step-desc">
+                <p>出力されたコードを自分のパソコン上で動かし，授業で使えるかテストします．</p>
+                <ul>
+                    <li>AIが出力したコードの右上にある「コピー」ボタンを押します．</li>
+                    <li>パソコンの「メモ帳」などを開き，貼り付けます．</li>
+                    <li>名前をつけて保存する際，ファイル名を <code>test.html</code> のようにし，拡張子を必ず <code>.html</code> にして保存します．</li>
+                    <li>保存したファイルをダブルクリックしてブラウザ（EdgeやChrome）で開き，動作を確認します．</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step-container">
+            <div class="step-header"><span class="step-badge">Step 3</span><h2 class="step-title">AIに指示を出して修正する（重要）</h2></div>
+            <div class="step-desc">
+                <p>思った通りに動かない場合や，デザインを変えりたい場合は，同じAIのチャット画面で追加の指示を出します（壁打ち）．</p>
+                <br>
+                <strong>💡 デザインや機能を追加したい場合</strong>
+                <p>具体的に「どこを」「どうしたいか」を伝えます．</p>
+                <div class="chat-box">「リセットボタンが小さくてスマホで押しにくいです．ボタンのサイズを2倍にしてください．」</div>
+                <div class="chat-box">「グラフの線の色を青から赤に変更し，もう少し太くしてください．」</div>
+                <br>
+                <strong>💡 エラーが出て動かない場合（画面が真っ白など）</strong>
+                <p>エラーの原因を人間が考える必要はありません．ブラウザでF12キーを押してエラーメッセージを確認し，そのままAIに貼り付けます．</p>
+                <div class="error-box">「画面が真っ白になり動きません．以下のエラーが出ています．原因を特定してコードを修正してください．<br>Uncaught ReferenceError: variable is not defined at line 45」</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

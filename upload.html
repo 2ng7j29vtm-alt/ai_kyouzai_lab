@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIきょうざいラボ - GitHub公開手順</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.6;
+            padding-bottom: 60px;
+        }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        /* ヘッダー */
+        header {
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 40px;
+            border-bottom: 1px solid #2d2d2d;
+        }
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .logo-icon {
+            background-color: #e8f0fe;
+            color: #1a73e8;
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* メインコンテナ */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .page-title {
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+        .page-desc {
+            color: #aaaaaa;
+            font-size: 1.1rem;
+        }
+
+        /* アラートボックス */
+        .alert-box {
+            background-color: #2d3748;
+            border-left: 5px solid #4299e1;
+            padding: 20px;
+            border-radius: 6px;
+            margin-bottom: 40px;
+        }
+        .alert-title {
+            font-weight: bold;
+            color: #90cdf4;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        /* ステップ解説 */
+        .step-container {
+            background-color: #262626;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #333333;
+        }
+        .step-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #333333;
+            padding-bottom: 15px;
+        }
+        .step-badge {
+            background-color: #2b6cb0;
+            color: white;
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+        }
+        .step-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+        }
+        
+        /* 画像プレースホルダー */
+        .img-placeholder {
+            background-color: #1e1e1e;
+            border: 2px dashed #4a5568;
+            border-radius: 8px;
+            width: 100%;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            margin: 20px 0;
+            text-align: center;
+            padding: 20px;
+        }
+        .img-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        /* 解説テキスト */
+        .step-desc {
+            font-size: 1.05rem;
+            margin-bottom: 15px;
+        }
+        .step-desc ul {
+            margin-left: 25px;
+            margin-top: 10px;
+            color: #cccccc;
+        }
+        .step-desc li {
+            margin-bottom: 8px;
+        }
+        
+        /* 強調テキスト */
+        .highlight {
+            color: #fc8181;
+            font-weight: bold;
+        }
+        .btn-green {
+            background-color: #2ea043;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .code-box {
+            background-color: #1e1e1e;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            color: #90cdf4;
+        }
+
+        /* 実際の画像用のスタイル */
+        .step-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid #4a5568;
+            margin: 20px 0;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area">
+            <div class="logo-icon">🔑</div>
+            <span>AIきょうざいラボ</span>
+        </div>
+        <a href="index.html" style="color: #cccccc; font-size: 0.95rem;">ホームに戻る</a>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">教材をWebに公開して生徒に配る手順</h1>
+            <p class="page-desc">生成AIが作ったコードを「GitHub」という無料のクラウドサービスに貼り付け，生徒が見られるようにURLを発行します．</p>
+        </div>
+
+        <div class="alert-box">
+            <div class="alert-title">💡 事前準備：アカウントの作成</div>
+            <p>この手順を進めるには，無料のGitHubアカウントが必要です．まだお持ちでない方は，<a href="https://github.com/" target="_blank" style="color: #90cdf4; text-decoration: underline;">GitHub公式サイト</a>からメールアドレスを登録してアカウントを作成してください．</p>
+        </div>
+
+        <div class="step-container">
+            <div class="step-header">
+                <span class="step-badge">Step 1</span>
+                <h2 class="step-title">教材の「置き場所」を作る</h2>
+            </div>
+            <div class="step-desc">
+                まずはファイルを保存するための専用フォルダ（Repositoryと呼びます）を作ります．
+                <ul>
+                    <li>GitHubにログインし，画面左上または右上にある緑色の <span class="btn-green">New</span> ボタンをクリックします．</li>
+                    <li>「Repository name」に半角英数で名前をつけます．（例：<span class="code-box">math-app</span>）</li>
+                    <li>「Public（公開）」が選択されていることを確認し，一番下の緑色のボタンを押します．</li>
+                </ul>
+            </div>
+           <img src="step1.jpg" alt="New Repository作成画面" class="step-image">
+        </div>
+
+        <div class="step-container">
+            <div class="step-header">
+                <span class="step-badge">Step 2</span>
+                <h2 class="step-title">ファイルを作成してコードを貼り付ける</h2>
+            </div>
+            <div class="step-desc">
+                作成した置き場所に，AIが作ったHTMLファイルを入れます．
+                <ul>
+                    <li>画面の中央付近にある「uploading an existing file」という青い文字をクリックします．</li>
+                    <li>パソコン内にある <code>入力した名前.html</code> ファイルをドラッグ＆ドロップします．</li>
+                    <li>アップロードが終わったら，画面の一番下にある緑色の <span class="btn-green">Commit changes</span> ボタンを押して保存します．</li>
+                </ul>
+            </div>
+            <img src="step2.jpg" alt="ファイル作成とコード貼り付け画面" class="step-image">
+        </div>
+
+        <div class="step-container">
+            <div class="step-header">
+                <span class="step-badge">Step 3</span>
+                <h2 class="step-title">Webサイトとして公開する</h2>
+            </div>
+            <div class="step-desc">
+                保存したファイルを，インターネット上のWebサイトとして公開する設定を行います．
+                <ul>
+                    <li>画面上のメニューから「Settings（歯車マーク）」をクリックします．</li>
+                    <li>左側のメニューの下の方にある「Pages」をクリックします．</li>
+                    <li>「Branch」の「None」を「<span style="color: #ffffff; font-weight: bold;">main</span>」に変更し，「Save」を押します．</li>
+                    <li><span class="highlight">※URLが発行されるまで1〜2分かかります．少し待ってからページを再読み込み（リロード）してください．</span></li>
+                </ul>
+            </div>
+            <img src="step3.jpg" alt="SettingsのPages設定画面" class="step-image">
+        </div>
+
+        <div class="step-container">
+            <div class="step-header">
+                <span class="step-badge">Step 4</span>
+                <h2 class="step-title">URLをQRコードにする</h2>
+            </div>
+            <div class="step-desc">
+                発行されたURLを生徒のスマホに配るため，QRコードに変換します．
+                <ul>
+                    <li>Step 3で表示されたURL（例：<span class="code-box">https://あなたの名前.github.io/math-app/</span>）をコピーします．</li>
+                    <li>Step 3で表示されたURLの最後に，「/」と「Step 2で入れたファイル名」を書き足してコピーします．
+（例：<span class="code-box">https://あなたの名前.github.io/math-app/入力した名前.html</span>)
+                    <li>無料のQRコード作成サイトを開き，URLを貼り付けてQRコード画像をダウンロードします．</li>
+                    <li>ダウンロードした画像を印刷したり，授業用のプロジェクターに映したりして生徒に読み取らせます．</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

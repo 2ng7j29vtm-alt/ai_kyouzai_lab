@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>二次関数シミュレーター y = ax² + bx + c</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --accent: #2563eb;
+      --accent-soft: #dbeafe;
+      --text: #111827;
+      --grid: #1e293b;
+      --axis-x: #ff4d4d;
+      --axis-y: #4da6ff;
+      --graph: #38bdf8;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 1rem;
+      background: var(--bg);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      display: flex;
+      justify-content: center;
+      color: var(--text);
+    }
+    .container {
+      width: 100%;
+      max-width: 900px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 1.7rem;
+      margin: 0 0 0.5rem;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #6b7280;
+      margin-bottom: 1rem;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 1rem;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.12);
+      padding: 1rem;
+    }
+    .layout {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .left, .right {
+      flex: 1 1 260px;
+      min-width: 0;
+    }
+    .panel-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .equation-box {
+      background: var(--accent-soft);
+      border-radius: 0.75rem;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .equation-main {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.25rem;
+    }
+    .equation-sub {
+      font-size: 0.9rem;
+      color: #374151;
+      line-height: 1.5;
+    }
+    .slider-group {
+      margin-top: 0.5rem;
+    }
+    .slider-block {
+      margin-bottom: 0.75rem;
+    }
+    .slider-label-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.95rem;
+      margin-bottom: 0.25rem;
+    }
+    .slider-label-row span.value {
+      font-weight: 600;
+      color: var(--accent);
+    }
+    input[type="range"] {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.25);
+      cursor: pointer;
+    }
+    input[type="range"]::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid #ffffff;
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.25);
+      cursor: pointer;
+    }
+    .hint-list {
+      font-size: 0.85rem;
+      color: #4b5563;
+      margin-top: 0.5rem;
+      padding-left: 1.1rem;
+    }
+    .hint-list li {
+      margin-bottom: 0.25rem;
+    }
+    .graph-wrapper {
+      background: #020617;
+      border-radius: 0.75rem;
+      padding: 0.5rem;
+    }
+    canvas {
+      width: 100%;
+      height: 480px;
+      display: block;
+      border-radius: 0.5rem;
+      background: #020617;
+    }
+    .note {
+      font-size: 0.8rem;
+      color: #6b7280;
+      margin-top: 0.4rem;
+      text-align: right;
+    }
+    .btn-row {
+      margin-top: 0.5rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .btn-reset {
+      flex: 1 1 140px;
+      padding: 0.7rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      border: none;
+      background: #ef4444;
+      color: #ffffff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-reset:active {
+      opacity: 0.9;
+    }
+    @media (max-width: 640px) {
+      h1 {
+        font-size: 1.4rem;
+      }
+      .subtitle {
+        font-size: 0.85rem;
+      }
+      canvas {
+        height: 420px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>二次関数シミュレーター</h1>
+    <p class="subtitle">y = ax² + bx + c のグラフを，スライダーで動かして形の変化を観察しよう。</p>
+
+    <div class="card">
+      <div class="layout">
+        <div class="left">
+          <div class="panel-title">1. 係数 a, b, c を動かそう</div>
+          <div class="equation-box">
+            <div class="equation-main" id="equationText">y = 1x² + 0x + 0</div>
+            <div class="equation-sub">
+              ・a：グラフの開き方（上向き / 下向き，細い / 広い）<br>
+              ・b：グラフの左右へのずれ方<br>
+              ・c：y切片（x = 0 のときの y の値）
+            </div>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-block">
+              <div class="slider-label-row">
+                <span>a（開き具合）</span>
+                <span class="value" id="aValue">a = 1.0</span>
+              </div>
+              <input type="range" id="aSlider" min="-5" max="5" step="0.1" value="1">
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-label-row">
+                <span>b（左右のずれ）</span>
+                <span class="value" id="bValue">b = 0.0</span>
+              </div>
+              <input type="range" id="bSlider" min="-10" max="10" step="0.1" value="0">
+            </div>
+
+            <div class="slider-block">
+              <div class="slider-label-row">
+                <span>c（y切片）</span>
+                <span class="value" id="cValue">c = 0.0</span>
+              </div>
+              <input type="range" id="cSlider" min="-10" max="10" step="0.5" value="0">
+            </div>
+          </div>
+
+          <ul class="hint-list">
+            <li>a を動かすと，グラフの「開き方」がどう変わるかに注目しよう。</li>
+            <li>b を動かすと，頂点が左右にどのように動くか見てみよう。</li>
+            <li>c を動かすと，グラフ全体が上下に平行移動することを確認しよう。</li>
+          </ul>
+
+          <div class="btn-row">
+            <button class="btn-reset" id="resetBtn">リセット</button>
+          </div>
+        </div>
+
+        <div class="right">
+          <div class="panel-title">2. グラフの変化を観察しよう</div>
+          <div class="graph-wrapper">
+            <canvas id="graph"></canvas>
+          </div>
+          <p class="note">※ スマホではスライダーを指で動かして，グラフの形の変化をリアルタイムで確認できます。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("graph");
+    const ctx = canvas.getContext("2d");
+
+    const aSlider = document.getElementById("aSlider");
+    const bSlider = document.getElementById("bSlider");
+    const cSlider = document.getElementById("cSlider");
+
+    const aValue = document.getElementById("aValue");
+    const bValue = document.getElementById("bValue");
+    const cValue = document.getElementById("cValue");
+    const equationText = document.getElementById("equationText");
+    const resetBtn = document.getElementById("resetBtn");
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.setTransform(window.devicePixelRatio, 0, 0, window.devicePixelRatio, 0, 0);
+      draw();
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+
+    function toCanvasCoords(x, y, width, height) {
+      const xMin = -10, xMax = 10;
+      const yMin = -10, yMax = 10;
+      const px = (x - xMin) / (xMax - xMin) * width;
+      const py = height - (y - yMin) / (yMax - yMin) * height;
+      return { x: px, y: py };
+    }
+
+    function drawGrid(width, height) {
+      ctx.fillStyle = "#020617";
+      ctx.fillRect(0, 0, width, height);
+
+      const origin = toCanvasCoords(0, 0, width, height);
+
+      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--axis-x").trim() || "#ff4d4d";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, origin.y);
+      ctx.lineTo(width, origin.y);
+      ctx.stroke();
+
+      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--axis-y").trim() || "#4da6ff";
+      ctx.beginPath();
+      ctx.moveTo(origin.x, 0);
+      ctx.lineTo(origin.x, height);
+      ctx.stroke();
+
+      ctx.fillStyle = "#ffffff";
+      ctx.font = "16px system-ui, sans-serif";
+      ctx.fillText("O", origin.x + 6, origin.y - 6);
+
+      ctx.font = "13px system-ui, sans-serif";
+      ctx.fillStyle = "#ffffff";
+      ctx.strokeStyle = "#ffffff";
+      ctx.lineWidth = 1;
+
+      for (let i = -10; i <= 10; i++) {
+        if (i === 0) continue;
+
+        const posX = toCanvasCoords(i, 0, width, height);
+        ctx.beginPath();
+        ctx.moveTo(posX.x, posX.y - 5);
+        ctx.lineTo(posX.x, posX.y + 5);
+        ctx.stroke();
+        ctx.fillText(i.toString(), posX.x - 4, posX.y + 18);
+
+        const posY = toCanvasCoords(0, i, width, height);
+        ctx.beginPath();
+        ctx.moveTo(posY.x - 5, posY.y);
+        ctx.lineTo(posY.x + 5, posY.y);
+        ctx.stroke();
+        ctx.fillText(i.toString(), posY.x + 8, posY.y + 4);
+      }
+
+      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--grid").trim() || "#1e293b";
+      ctx.lineWidth = 1;
+
+      for (let i = -10; i <= 10; i++) {
+        if (i === 0) continue;
+
+        let p1 = toCanvasCoords(i, -10, width, height);
+        let p2 = toCanvasCoords(i, 10, width, height);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+
+        p1 = toCanvasCoords(-10, i, width, height);
+        p2 = toCanvasCoords(10, i, width, height);
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+      }
+    }
+
+    function draw() {
+      const width = canvas.width / window.devicePixelRatio;
+      const height = canvas.height / window.devicePixelRatio;
+
+      drawGrid(width, height);
+
+      const a = parseFloat(aSlider.value);
+      const b = parseFloat(bSlider.value);
+      const c = parseFloat(cSlider.value);
+
+      ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue("--graph").trim() || "#38bdf8";
+      ctx.lineWidth = 2;
+
+      ctx.beginPath();
+      let first = true;
+
+      for (let x = -10; x <= 10; x += 0.05) {
+        const y = a * x * x + b * x + c;
+        const pos = toCanvasCoords(x, y, width, height);
+
+        if (first) {
+          ctx.moveTo(pos.x, pos.y);
+          first = false;
+        } else {
+          ctx.lineTo(pos.x, pos.y);
+        }
+      }
+
+      ctx.stroke();
+    }
+
+    function updateUI() {
+      const a = parseFloat(aSlider.value);
+      const b = parseFloat(bSlider.value);
+      const c = parseFloat(cSlider.value);
+
+      aValue.textContent = `a = ${a.toFixed(1)}`;
+      bValue.textContent = `b = ${b.toFixed(1)}`;
+      cValue.textContent = `c = ${c.toFixed(1)}`;
+
+      const aStr = a.toFixed(1);
+      const bStr = b.toFixed(1);
+      const cStr = c.toFixed(1);
+      equationText.textContent = `y = ${aStr}x² + ${bStr}x + ${cStr}`;
+    }
+
+    function handleChange() {
+      updateUI();
+      draw();
+    }
+
+    aSlider.addEventListener("input", handleChange);
+    bSlider.addEventListener("input", handleChange);
+    cSlider.addEventListener("input", handleChange);
+
+    resetBtn.addEventListener("click", () => {
+      aSlider.value = 1;
+      bSlider.value = 0;
+      cSlider.value = 0;
+      updateUI();
+      draw();
+    });
+
+    resizeCanvas();
+    updateUI();
+  </script>
+</body>
+</html>
