@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIきょうざいラボ - サンプル・プロンプト集</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Helvetica Neue', Arial, sans-serif; background-color: #1a1a1a; color: #ffffff; line-height: 1.6; padding-bottom: 60px; }
+        a { color: inherit; text-decoration: none; }
+        header { background-color: #1a1a1a; display: flex; justify-content: space-between; padding: 15px 40px; border-bottom: 1px solid #2d2d2d; }
+        .logo-area { display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 1.2rem; }
+        .logo-icon { background-color: #e8f0fe; color: #1a73e8; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .page-header { text-align: center; margin-bottom: 40px; }
+        .page-title { font-size: 2rem; margin-bottom: 15px; }
+        .page-desc { color: #aaaaaa; font-size: 1.1rem; }
+        .sample-card { background-color: #262626; border-radius: 12px; padding: 30px; margin-bottom: 30px; border: 1px solid #333333; }
+        .sample-header { display: flex; align-items: center; gap: 15px; margin-bottom: 20px; border-bottom: 1px solid #333333; padding-bottom: 15px; }
+        .subject-badge { padding: 5px 12px; border-radius: 20px; font-weight: bold; font-size: 1rem; }
+        .math-badge { background-color: #2b6cb0; color: white; }
+        .physics-badge { background-color: #2f855a; color: white; }
+        .info-badge { background-color: #b83280; color: white; }
+        .sample-title { font-size: 1.4rem; font-weight: bold; }
+        .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .grid-2col { grid-template-columns: 1fr; } }
+        .img-area { background-color: #1e1e1e; border: 1px solid #4a5568; border-radius: 8px; display: flex; align-items: center; justify-content: center; height: 250px; color: #718096; }
+        .prompt-area { background-color: #1e293b; padding: 20px; border-radius: 8px; border-left: 4px solid #4299e1; font-family: monospace; font-size: 0.9rem; color: #cbd5e1; white-space: pre-wrap; height: 250px; overflow-y: auto; }
+        .red-text { color: #fc8181; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-area"><div class="logo-icon">🔑</div><span>AIきょうざいラボ</span></div>
+        <a href="index.html" style="color: #cccccc; font-size: 0.95rem;">ホームに戻る</a>
+    </header>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">サンプル・プロンプト集</h1>
+            <p class="page-desc">完成品のイメージと，それを作るためのプロンプトです．是非参考にしてください．</p>
+        </div>
+
+        <div class="sample-card">
+            <div class="sample-header">
+                <span class="subject-badge math-badge">数学</span><h2 class="sample-title">二次関数シミュレーター</h2>
+            </div>
+            <div class="grid-2col">
+                <div class="img-area" style="position: relative; overflow: hidden;">
+    ここに二次関数の画像（sample-math.jpg）
+    <a href="sim-math.html" target="_blank" style="position: absolute; background-color: #e53e3e; color: white; padding: 12px 24px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: transform 0.2s;">
+        ▶ 実際に動かしてみる
+    </a>
+</div>
+                <div class="prompt-area">あなたは優秀なプログラミング講師です．生徒が自由に操作できる「二次関数」のシミュレーターを作成してください．
+
+・スライダーを使って，係数a, b, cの値を動的に変化させられるようにしてください．
+・値の変化に合わせて，グラフの形状がリアルタイムに滑らかに変わる仕組みにしてください．
+・y軸x軸は目立つように色を変えてください．
+・軸にメモリもつけてください．
+・座標平面は縦長．
+
+【必須条件：必ず以下のルールを守って出力してください】
+1. HTML，CSS，JavaScriptのコードをすべて1つのHTMLファイル内に記述してください．
+2．完成したHTMLファイルのみを出力してください．
+3. 学校のネットワーク制限を考慮し，外部のライブラリやCDN（jQuery, React等）は一切使用しないでください．
+4. ユーザーがそのまま index.html として保存して実行できる状態にしてください。
+5. 生徒がスマートフォンで直感的に操作できるよう，ボタンや文字は大きくし，レスポンシブデザインにしてください．
+6. 何度もやり直せるように，必ず「リセットボタン」を画面内に配置してください．</div>
+            </div>
+        </div>
+
+        <div class="sample-card">
+            <div class="sample-header">
+                <span class="subject-badge info-badge">情報</span><h2 class="sample-title">ソートアルゴリズム可視化</h2>
+            </div>
+            <div class="grid-2col">
+                <div class="img-area" style="position: relative; overflow: hidden;">
+    ここに二次関数の画像（sample-math.jpg）
+    <a href="sim-math.html" target="_blank" style="position: absolute; background-color: #e53e3e; color: white; padding: 12px 24px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: transform 0.2s;">
+        ▶ 実際に動かしてみる
+    </a>
+</div>
+                <div class="prompt-area">あなたは優秀なプログラミング講師です．HTMLで「<span class="red-text">バブルソート</span>」の動的可視化教材を作成してください．
+
+・ランダムな数値の棒グラフを描画する．
+・「<span class="red-text">次へ進む</span>」ボタンで1ステップずつ処理を実行する．
+・比較中のデータの棒の色を赤にするなど強調する．
+・1つのHTMLファイルで完結し，外部ライブラリは使用しないこと．</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
