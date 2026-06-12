@@ -24,7 +24,10 @@
         .sample-title { font-size: 1.4rem; font-weight: bold; }
         .grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         @media (max-width: 768px) { .grid-2col { grid-template-columns: 1fr; } }
-        .img-area { background-color: #1e1e1e; border: 1px solid #4a5568; border-radius: 8px; display: flex; align-items: center; justify-content: center; height: 250px; color: #718096; }
+        /* 画像がない場合のボタン配置用コンテナ */
+        .action-area { background-color: #1e1e1e; border: 1px solid #4a5568; border-radius: 8px; display: flex; align-items: center; justify-content: center; height: 250px; }
+        .btn-action { background-color: #e53e3e; color: white; padding: 12px 24px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: transform 0.2s; display: inline-block; }
+        .btn-action:hover { transform: translateY(-2px); }
         .prompt-area { background-color: #1e293b; padding: 20px; border-radius: 8px; border-left: 4px solid #4299e1; font-family: monospace; font-size: 0.9rem; color: #cbd5e1; white-space: pre-wrap; height: 250px; overflow-y: auto; }
         .red-text { color: #fc8181; font-weight: bold; }
     </style>
@@ -45,9 +48,11 @@
                 <span class="subject-badge math-badge">数学</span><h2 class="sample-title">二次関数シミュレーター</h2>
             </div>
             <div class="grid-2col">
-    <a href="sim-math.html" target="_blank" style="position: absolute; background-color: #e53e3e; color: white; padding: 12px 24px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: transform 0.2s;">
-        ▶ 実際に動かしてみる
-    </a>
+                <div class="action-area">
+                    <a href="sim-math.html" target="_blank" class="btn-action">
+                        ▶ 実際に動かしてみる
+                    </a>
+                </div>
                 <div class="prompt-area">あなたは優秀なプログラミング講師です．生徒が自由に操作できる「二次関数」のシミュレーターを作成してください．
 
 ・スライダーを使って，係数a, b, cの値を動的に変化させられるようにしてください．
@@ -71,9 +76,11 @@
                 <span class="subject-badge info-badge">情報</span><h2 class="sample-title">ソートアルゴリズム可視化</h2>
             </div>
             <div class="grid-2col">
-    <a href="sim-math.html" target="_blank" style="position: absolute; background-color: #e53e3e; color: white; padding: 12px 24px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: transform 0.2s;">
-        ▶ 実際に動かしてみる
-    </a>
+                <div class="action-area">
+                    <a href="sim-info.html" target="_blank" class="btn-action">
+                        ▶ 実際に動かしてみる
+                    </a>
+                </div>
                 <div class="prompt-area">あなたは優秀なプログラミング講師です．HTMLで「<span class="red-text">バブルソート</span>」の動的可視化教材を作成してください．
 
 ・ランダムな数値の棒グラフを描画する．
